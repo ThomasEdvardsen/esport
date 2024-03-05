@@ -1,0 +1,7 @@
+nvidia-display-driver
+steam
+epicgameslauncher
+valorant
+minecraft-launcher
+discord
+googlechrome
