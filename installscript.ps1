@@ -1,14 +1,26 @@
 ## Start up fluff
 
 ## In the Powershell admn window, run the following command "Set-ExecutionPolicy Bypass". This will enable the script to run
-
-
+param (
+    [ValidateSet("-u", "-U", "-update", "true")]
+    [switch]$Update = $false,
+    [string]$Path = "$PSScriptRoot\apps.txt"
+)
 
 Write-host @"
     GameInstaller`n`n
     Install script for setting up a Gaming Environment
     Installing packages from Chocolatey and configuring everything you need`n
 "@
+
+
+if ($Update -or (-not (Test-Path $Path))) {
+    Write-Host -ForegroundColor Cyan "Updating apps.txt..."
+    $url_apps = "https://raw.githubusercontent.com/ThomasEdvardsen/esport/main/apps.txt"
+    Invoke-WebRequest -Uri $url_apps -OutFile $Path
+    Write-Host -ForegroundColor Green "apps.txt updated successfully."
+    Exit
+}
 
 Write-host -ForegroundColor "Yellow" "`n    Checking if Chocolatey is installed on the computer...`n"
 
