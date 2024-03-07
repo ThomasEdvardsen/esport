@@ -19,7 +19,6 @@ if ($Update -or (-not (Test-Path $Path))) {
     $url_apps = "https://raw.githubusercontent.com/ThomasEdvardsen/esport/main/apps.txt"
     Invoke-WebRequest -Uri $url_apps -OutFile $Path
     Write-Host -ForegroundColor Green "apps.txt updated successfully."
-    Exit
 }
 
 Write-host -ForegroundColor "Yellow" "`n    Checking if Chocolatey is installed on the computer...`n"
@@ -42,7 +41,6 @@ Write-host -ForegroundColor "Cyan" "`n------------------------------------------
 Write-host -ForegroundColor "Cyan" "    Starting installation Process`n"
 Write-host -ForegroundColor "Cyan" "------------------------------------------------------------------------------------`n"
 
-
 $installFrom = "$PSSCriptRoot\apps.txt"
 
 # Get all the apps from apps.txt file
@@ -53,12 +51,14 @@ $count = Get-Content "$installFrom" | Measure-Object -Line
 Write-host -ForegroundColor "Cyan" "`n    > Application list contains $count applications.`n"
 
 # Loop through all the apps from apps.txt and install them with Chocolatey.
-foreach ($package in $packages) {
-    choco install $package  -y
-    Write-host -ForegroundColor "Cyan" "`n------------------------------------------------------------------------------------`n"
-    Write-host -ForegroundColor "Cyan" "    GameInstaller Info`n"
-    Write-host -ForegroundColor "Cyan" "    Installation of $package has been completed`n"
-    Write-host -ForegroundColor "Cyan" "`n------------------------------------------------------------------------------------`n"
+foreach ($line in $packages) {
+    # Split the line into package name and parameters (if any)
+    $packageName, $additionalParams = $line -split ' ', 2
+
+    Write-host -ForegroundColor "Cyan" " Installing $packageName "
+
+    # Install the package with Chocolatey along with additional parameters
+    choco install $packageName $additionalParams -y
 }
 
 Write-host -ForegroundColor "Cyan" "------------------------------------------------------------------------------------"
