@@ -1,7 +1,6 @@
 nvidia-display-driver
-steam
+steam --checksum=5d8d697707c89466cfe203bde7e242680d020646bd5e49edaabd67fc6a7d6321
 epicgameslauncher
 valorant
 minecraft-launcher
 discord
-googlechrome
