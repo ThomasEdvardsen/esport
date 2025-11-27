@@ -20,8 +20,14 @@ $ProgressPreference = $old
 
 Write-Host "Installing driver silent..."
 $proc = Start-Process -FilePath $dst -ArgumentList "-s -noreboot" -Wait -PassThru
+Write-Host "Install exitkode: $($proc.ExitCode)"
+if ($proc.ExitCode -eq 0) {
+    Write-Host "Installation finished. Please restart your PC."
+} else {
+    Write-Warning "Installation failed or gave a warning (ExitCode: $($proc.ExitCode)). Check NVIDIA-logs in %ProgramData%."
+}
 
-#Write-Host "Cleaning up..."
-#Remove-Item $dst -Force
+Write-Host "Cleaning up..."
+Remove-Item $dst -Force
 
 Write-Host "Finished."
